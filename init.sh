@@ -1,3 +1,4 @@
+sudo update-alternatives --install /usr/bin/python python /usr/bin/python3 1
 sudo ln -s /home/box/web/etc/nginx.conf  /etc/nginx/sites-enabled/test.conf
 sudo rm -rf /etc/nginx/sites-enabled/default
 sudo /etc/init.d/nginx restart
