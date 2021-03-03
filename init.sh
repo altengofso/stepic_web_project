@@ -7,9 +7,8 @@ sudo ln -s /home/box/web/etc/gunicorn-wsgi.conf   /etc/gunicorn.d/gunicorn-wsgi
 sudo ln -s /home/box/web/etc/gunicorn-django.conf   /etc/gunicorn.d/gunicorn-django
 sudo /etc/init.d/gunicorn restart
 sudo /etc/init.d/mysql start
-mysql -uroot -e "create database if not exists ask;"
-mysql -uroot -e "create user if not exists 'ask'@'localhost' identified by 'qwe123++';"
-mysql -uroot -e "grant all privileges on ask.* to 'ask'@'localhost';"
+mysql -uroot -e "create database ask;"
+mysql -uroot -e "grant all privileges on ask.* to 'ask'@'localhost' identified by 'qwe123++' with grant option;"
 mysql -uroot -e "flush privileges;"
-~/web/ask/manage.py makemigrations
-~/web/ask/manage.py migrate
+sudo python /home/box/web/ask/manage.py makemigrations
+sudo python /home/box/web/ask/manage.py migrate
