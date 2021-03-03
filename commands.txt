@@ -1,2 +1,5 @@
 git clone https://github.com/altengofso/stepic_web_project.git /home/box/web
 bash /home/box/web/init.sh
+
+mysql -uroot -e "create database ask"
+mysql -uroot -e "create database ask"
