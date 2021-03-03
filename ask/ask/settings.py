@@ -85,9 +85,9 @@ else:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.mysql',
-            'NAME': 'djbase',
-            'USER': 'django',
-            'PASSWORD': 'pass123',
+            'NAME': 'ask',
+            'USER': 'ask',
+            'PASSWORD': 'qwe123++',
             'HOST': '127.0.0.1',
             'PORT': '3306',
         }
