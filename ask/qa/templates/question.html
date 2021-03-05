@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ question }}</title>
+</head>
+<body>
+    <h1>{{ question }}</h1>
+    <p>{{ question.text }}<br>
+    Author: {{ question.author }}<br>
+    Added: {{ question.added_at }}<br>
+    Rating: {{ question.rating }}<br>
+    Likes: {{ question.likes.count }}</p>
+    {% if answers %}
+        <h2>Answers:</h2>
+        {% for answer in answers %}
+        <p>{{ answer }}<br>
+        Author: {{ answer.author }}<br>
+        Added: {{ answer.added_at }}<br></p>
+        {% endfor %}
+    {% endif %}
+    <p><a href="/">Return to main page</a></p>
+</body>
+</html>
