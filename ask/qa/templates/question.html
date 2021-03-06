@@ -19,6 +19,15 @@
         Added: {{ answer.added_at }}<br></p>
         {% endfor %}
     {% endif %}
-    <p><a href="/">Return to main page</a></p>
+    <h2>Make Answer</h2>
+    <form method="post" action="{{ question.get_url }}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Save</button>
+    </form>
+    <p><div>User: {{ user }}</div>
+    <div>Session: {{ session }} </div></p>
+    <p><div><a href="/ask/">Ask a question</a></div></p>
+    <p><div><a href="/">Return to main page</a></div></p>
 </body>
 </html>

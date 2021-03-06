@@ -24,7 +24,7 @@ urlpatterns = [
     path('login/', found),
     path('signup/', found),
     path('question/<int:pk>/', question, name='question-id'),
-    path('ask/', found),
+    path('ask/', ask),
     path('popular/', popular),
     path('new/', found),
 ]

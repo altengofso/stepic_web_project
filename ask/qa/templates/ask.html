@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title }}</title>
+</head>
+<body>
+    <h1>{{ title }}</h1>
+    <form method="post" action="/ask/">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Save</button>
+    </form>
+    <p><div>User: {{ user }}</div>
+    <div>Session: {{ session }} </div></p>
+    <p><div><a href="/">Return to main page</a></div></p>
+</body>
+</html>

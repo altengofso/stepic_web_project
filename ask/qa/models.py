@@ -11,6 +11,10 @@ class QuestionManager(models.Manager):
         return self.order_by('-rating')
 
 
+class AnswerManager(models.Manager):
+    pass
+
+
 class Question(models.Model):
     objects = QuestionManager()
     title = models.CharField(default='', max_length=255)
@@ -28,6 +32,7 @@ class Question(models.Model):
 
 
 class Answer(models.Model):
+    objects = AnswerManager()
     text = models.TextField(default='')
     added_at = models.DateTimeField(null=True, auto_now_add=True)
     question = models.ForeignKey(Question, null=True, on_delete=models.SET_NULL)

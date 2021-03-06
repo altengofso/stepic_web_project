@@ -1,6 +1,7 @@
 from django.core.paginator import Paginator, EmptyPage
-from django.http import HttpResponse, Http404
+from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.shortcuts import render
+from .forms import AskForm, AnswerForm
 
 from .models import Question
 
@@ -57,7 +58,37 @@ def question(request, *args, **kwargs):
         question = Question.objects.get(id=kwargs['pk'])
     except Question.DoesNotExist:
         raise Http404
+    if request.method == 'POST':
+        form = AnswerForm(request.POST)
+        if form.is_valid():
+            form._user = request.user
+            _ = form.save()
+            url = question.get_url()
+            return HttpResponseRedirect(url)
+    else:
+        form = AnswerForm(initial={'question': question.id})
     return render(request, 'question.html', {
         'question': question,
-        'answers': question.answer_set.all()
+        'answers': question.answer_set.all(),
+        'form': form,
+        'user': request.user,
+        'session': request.session
+    })
+
+
+def ask(request, *args, **kwargs):
+    if request.method == 'POST':
+        form = AskForm(request.POST)
+        if form.is_valid():
+            form._user = request.user
+            post = form.save()
+            url = post.get_url()
+            return HttpResponseRedirect(url)
+    else:
+        form = AskForm()
+    return render(request, 'ask.html', {
+        'title': 'Ask a question',
+        'form': form,
+        'user': request.user,
+        'session': request.session
     })
