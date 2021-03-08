@@ -45,9 +45,9 @@ class AnswerForm(forms.Form):
 
 
 class SignupForm(forms.ModelForm):
-    email = forms.EmailField(required=True)
+    email = forms.EmailField(required=False)
     password = forms.CharField(
-        required=True,
+        required=False,
         strip=False,
         widget=forms.PasswordInput,
         help_text=password_validation.password_validators_help_text_html(),
@@ -93,8 +93,8 @@ class SignupForm(forms.ModelForm):
 
 
 class LoginForm(forms.Form):
-    username = forms.CharField(max_length=100, required=True)
-    password = forms.CharField(widget=forms.PasswordInput, required=True)
+    username = forms.CharField(max_length=100, required=False)
+    password = forms.CharField(widget=forms.PasswordInput, required=False)
 
     def clean(self):
         username = self.cleaned_data.get('username')
