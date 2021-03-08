@@ -72,16 +72,16 @@ class SignupForm(forms.ModelForm):
             pass
         return email
 
-    # def _post_clean(self):
-    #     super()._post_clean()
-    #     # Validate the password after self.instance is updated with form data
-    #     # by super().
-    #     password = self.cleaned_data.get('password')
-    #     if password:
-    #         try:
-    #             password_validation.validate_password(password, self.instance)
-    #         except forms.ValidationError as error:
-    #             self.add_error('password', error)
+    def _post_clean(self):
+        super()._post_clean()
+        # Validate the password after self.instance is updated with form data
+        # by super().
+        password = self.cleaned_data.get('password')
+        if password:
+            try:
+                password_validation.validate_password(password, self.instance)
+            except forms.ValidationError as error:
+                self.add_error('password', error)
 
     def save(self, commit=True):
         user = super().save(commit=False)

@@ -10,9 +10,9 @@
             <div class="mb-3">
                 <label class="form-label">{{ field.label }}</label>
                 {% if field.name == 'username' %}
-                    <input type="text" name="{{ field.name }}" value="{% if field.value %}{{ field.value }}{% endif %}" class="form-control">
+                    <input type="text" name="{{ field.name }}" value="{% if field.value %}{{ field.value }}{% endif %}" required class="form-control">
                 {% elif field.name == 'password' %}
-                    <input type="password" name="{{ field.name }}" value="{% if field.value %}{{ field.value }}{% endif %}" class="form-control">
+                    <input type="password" name="{{ field.name }}" value="{% if field.value %}{{ field.value }}{% endif %}" required class="form-control">
                 {% endif %}
                 {% for error in field.errors %}
                     <p class="text-danger">{{ error|escape }}</p>
