@@ -1,36 +1,38 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>{{ question }}</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
-</head>
-<body>
-<main class="container py-5">
-    <h1>{{ question }}</h1>
+{% extends 'base.html' %}
+{% block title %}{{ title }}{% endblock %}
+{% block page %}{{ title }}{% endblock %}
+{% block content %}
+<div class="container">
     <p>{{ question.text }}<br>
-    Author: {{ question.author }}<br>
-    Added: {{ question.added_at }}<br>
-    Rating: {{ question.rating }}<br>
-    Likes: {{ question.likes.count }}</p>
+    Author: {{ question.author }}.
+    Added: {{ question.added_at }}
+    Rating: {{ question.rating }}.
+    Likes: {{ question.likes.count }}.</p>
     {% if answers %}
-        <h2>Answers:</h2>
+        <hr>
+        <p><b>Answers:</b></p>
         {% for answer in answers %}
+        <hr>
         <p>{{ answer }}<br>
-        Author: {{ answer.author }}<br>
-        Added: {{ answer.added_at }}<br></p>
+        Author: {{ answer.author }}.
+        Added: {{ answer.added_at }}</p>
         {% endfor %}
     {% endif %}
-    <h2>Make Answer</h2>
+    <hr>
+    <p><b>Please, answer using the following form:</b></p>
     <form method="post" action="{{ question.get_url }}">
         {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Save</button>
+        {% for field in form %}
+            <div class="mb-3">
+                {% if field.name == 'text' %}
+                <label class="form-label">{{ field.label }}</label>
+                <textarea name="{{ field.name }}" required class="form-control" rows="3"></textarea>
+                {% elif field.name == 'question' %}
+                <input name="{{ field.name }}" value="{{ question.id }}" type="hidden" class="form-control">
+                {% endif %}
+            </div>
+        {% endfor %}
+        <button type="submit" class="btn btn-primary">Submit</button>
     </form>
-    <p><div>User: {{ user }}</div>
-    <div>Session: {{ session }} </div></p>
-    <p><div><a href="/ask/">Ask a question</a></div></p>
-    <p><div><a href="/">Return to main page</a></div></p>
-</main>
-</body>
-</html>
+</div>
+{% endblock %}

@@ -1,7 +1,8 @@
+from django.contrib.auth import authenticate, login, logout
 from django.core.paginator import Paginator, EmptyPage
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.shortcuts import render
-from .forms import AskForm, AnswerForm
+from .forms import *
 
 from .models import Question
 
@@ -37,6 +38,7 @@ def latest(request, *args, **kwargs):
     page_obj = paginate(request, questions)
     return render(request, 'list.html', {
         'title': 'Latest questions',
+        'user': request.user,
         'page_obj': page_obj,
     })
 
@@ -49,6 +51,7 @@ def popular(request, *args, **kwargs):
     page_obj = paginate(request, questions)
     return render(request, 'list.html', {
         'title': 'Popular questions',
+        'user': request.user,
         'page_obj': page_obj,
     })
 
@@ -68,11 +71,11 @@ def question(request, *args, **kwargs):
     else:
         form = AnswerForm(initial={'question': question.id})
     return render(request, 'question.html', {
+        'title': question,
         'question': question,
         'answers': question.answer_set.all(),
         'form': form,
-        'user': request.user,
-        'session': request.session
+        'user': request.user
     })
 
 
@@ -89,6 +92,59 @@ def ask(request, *args, **kwargs):
     return render(request, 'ask.html', {
         'title': 'Ask a question',
         'form': form,
-        'user': request.user,
-        'session': request.session
+        'user': request.user
     })
+
+
+def signup(request, *args, **kwargs):
+    if request.method == 'POST':
+        form = SignupForm(request.POST)
+        if form.is_valid():
+            _ = form.save()
+            username = request.POST.get('username')
+            password = request.POST.get('password')
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                if user.is_active:
+                    login(request, user)
+                    return HttpResponseRedirect('/')
+                else:
+                    return HttpResponse('Account blocked')
+            else:
+                return HttpResponse('Bad username or password')
+    else:
+        form = SignupForm()
+    return render(request, 'signup.html', {
+        'title': 'Create an account',
+        'form': form,
+        'user': request.user
+    })
+
+
+def login_view(request, *args, **kwargs):
+    if request.method == 'POST':
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            username = request.POST.get('username')
+            password = request.POST.get('password')
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                if user.is_active:
+                    login(request, user)
+                    return HttpResponseRedirect('/')
+                else:
+                    return HttpResponse('Account blocked')
+            else:
+                return HttpResponse('Bad username or password')
+    else:
+        form = LoginForm()
+    return render(request, 'login.html', {
+        'title': 'Log in',
+        'form': form,
+        'user': request.user
+    })
+
+
+def logout_view(request, *args, **kwargs):
+    logout(request)
+    return HttpResponseRedirect('/')
