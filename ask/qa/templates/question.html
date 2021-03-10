@@ -24,12 +24,10 @@
         {% csrf_token %}
         {% for field in form %}
             <div class="mb-3">
-                {% if field.name == 'text' %}
-                <label class="form-label">{{ field.label }}</label>
-                <textarea name="{{ field.name }}" required class="form-control" rows="3"></textarea>
-                {% elif field.name == 'question' %}
-                <input name="{{ field.name }}" value="{{ question.id }}" type="hidden" class="form-control">
+                {% if not field.is_hidden %}
+                   <label class="form-label">{{ field.label }}</label>
                 {% endif %}
+                {{ field }}
             </div>
         {% endfor %}
         <button type="submit" class="btn btn-primary">Submit</button>

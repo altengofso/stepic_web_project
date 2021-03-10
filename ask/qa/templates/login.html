@@ -8,19 +8,17 @@
         {% csrf_token %}
         {% for field in form %}
             <div class="mb-3">
-                <label class="form-label">{{ field.label }}</label>
-                {% if field.name == 'username' %}
-                    <input type="text" name="{{ field.name }}" value="{% if field.value %}{{ field.value }}{% endif %}" required class="form-control">
-                {% elif field.name == 'password' %}
-                    <input type="password" name="{{ field.name }}" value="{% if field.value %}{{ field.value }}{% endif %}" required class="form-control">
+                {% if not field.is_hidden %}
+                   <label class="form-label">{{ field.label }}</label>
                 {% endif %}
+                {{ field }}
                 {% for error in field.errors %}
-                    <p class="text-danger">{{ error|escape }}</p>
+                    <small class="form-text text-danger">{{ error|escape }}</small>
                 {% endfor %}
             </div>
         {% endfor %}
         {% for error in form.non_field_errors %}
-            <p class="text-danger">{{ error|escape }}</p>
+            <small class="form-text text-danger">{{ error|escape }}</small>
         {% endfor %}
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>

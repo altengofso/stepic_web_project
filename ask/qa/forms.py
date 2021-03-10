@@ -2,13 +2,14 @@ from django import forms
 from django.contrib.auth import password_validation, authenticate
 from django.contrib.auth.forms import UsernameField
 from django.contrib.auth.models import User
+from django.forms import TextInput
 
 from .models import Question, Answer
 
 
 class AskForm(forms.Form):
-    title = forms.CharField(max_length=255)
-    text = forms.CharField(widget=forms.Textarea)
+    title = forms.CharField(max_length=255, widget=forms.TextInput(attrs={'class': 'form-control'}), required=True)
+    text = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 3}), required=True)
 
     def clean(self):
         pass
@@ -22,7 +23,7 @@ class AskForm(forms.Form):
 
 
 class AnswerForm(forms.Form):
-    text = forms.CharField(widget=forms.Textarea)
+    text = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 3}), required=True)
     question = forms.IntegerField(widget=forms.HiddenInput)
 
     def clean_question(self):
@@ -45,11 +46,11 @@ class AnswerForm(forms.Form):
 
 
 class SignupForm(forms.ModelForm):
-    email = forms.EmailField(required=False)
+    email = forms.EmailField(required=True, widget=forms.EmailInput(attrs={'class': 'form-control'}))
     password = forms.CharField(
-        required=False,
+        required=True,
         strip=False,
-        widget=forms.PasswordInput,
+        widget=forms.PasswordInput(attrs={'class': 'form-control'}),
         help_text=password_validation.password_validators_help_text_html(),
     )
 
@@ -57,6 +58,9 @@ class SignupForm(forms.ModelForm):
         model = User
         fields = ("username",)
         field_classes = {'username': UsernameField}
+        widgets = {
+            'username': TextInput(attrs={'class': 'form-control'}),
+        }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -93,8 +97,8 @@ class SignupForm(forms.ModelForm):
 
 
 class LoginForm(forms.Form):
-    username = forms.CharField(max_length=100, required=False)
-    password = forms.CharField(widget=forms.PasswordInput, required=False)
+    username = forms.CharField(max_length=100, widget=forms.TextInput(attrs={'class': 'form-control'}), required=True)
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control'}), required=True)
 
     def clean(self):
         username = self.cleaned_data.get('username')
