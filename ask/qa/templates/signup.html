@@ -9,7 +9,7 @@
         {% for field in form %}
             <div class="mb-3">
                 {% if not field.is_hidden %}
-                   <label class="form-label">{{ field.label }}</label>
+                   <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
                 {% endif %}
                 {{ field }}
                 {% for error in field.errors %}
